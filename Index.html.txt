@@ -1,0 +1,213 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Boyfriend?</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    overflow:hidden;
+    height:100vh;
+    background:linear-gradient(135deg,#ff9ec4,#ffd6e8,#ffeef5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    text-align:center;
+}
+
+h1{
+    font-size:3rem;
+    color:#d63384;
+    margin-bottom:40px;
+}
+
+.buttons{
+    position:relative;
+    width:500px;
+    height:220px;
+    margin:auto;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    transition:.25s;
+}
+
+#yesBtn{
+    padding:20px 60px;
+    font-size:2rem;
+    border-radius:18px;
+    background:#ff4d88;
+    color:white;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+#yesBtn:hover{
+    transform:scale(1.08);
+}
+
+#noBtn{
+    position:absolute;
+    padding:12px 26px;
+    font-size:1.2rem;
+    border-radius:14px;
+    background:#666;
+    color:white;
+    left:330px;
+    top:90px;
+}
+
+#celebration{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#ff4d88,#ff87b2,#ffd3e3);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+#celebration h2{
+    font-size:4rem;
+    color:white;
+    text-align:center;
+    z-index:5;
+    text-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+
+#celebration p{
+    color:white;
+    font-size:1.6rem;
+    margin-top:20px;
+    z-index:5;
+}
+
+.heart{
+    position:absolute;
+    bottom:-60px;
+    color:#ff0055;
+    animation:float linear forwards;
+    user-select:none;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(0) scale(.6);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-120vh) scale(1.8) rotate(360deg);
+        opacity:0;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Will you be my boyfriend? ❤️</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">No</button>
+    </div>
+</div>
+
+<div id="celebration">
+    <h2>❤️ Yay!! ❤️</h2>
+    <p>You just made me the happiest person ever! 💕</p>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const celebration = document.getElementById("celebration");
+
+// Move the No button somewhere random
+function moveButton(){
+
+    const margin = 20;
+
+    const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+    const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+// Teleport when hovered
+noBtn.addEventListener("mouseenter", moveButton);
+
+// Teleport when clicked
+noBtn.addEventListener("click", e=>{
+    e.preventDefault();
+    moveButton();
+});
+
+// Teleport when mouse gets close
+document.addEventListener("mousemove",(e)=>{
+
+    const rect = noBtn.getBoundingClientRect();
+
+    const centerX = rect.left + rect.width/2;
+    const centerY = rect.top + rect.height/2;
+
+    const dx = e.clientX - centerX;
+    const dy = e.clientY - centerY;
+
+    const distance = Math.sqrt(dx*dx + dy*dy);
+
+    if(distance < 120){
+        moveButton();
+    }
+});
+
+// Celebration
+yesBtn.addEventListener("click",()=>{
+
+    document.querySelector(".container").style.display="none";
+    celebration.style.display="flex";
+
+    setInterval(createHeart,120);
+});
+
+function createHeart(){
+
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤️";
+
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(20+Math.random()*40)+"px";
+    heart.style.animationDuration=(3+Math.random()*3)+"s";
+
+    celebration.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },6000);
+}
+</script>
+
+</body>
+</html>
